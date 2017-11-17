@@ -10,7 +10,7 @@ function toggle() {
         tubeWidth = 50;
 
         gravity = 0.35;
-        tapBoost = 6.5;
+        tapBoost = 6.2;
 
         tubeGapHeight = 170;//230
         togglea.text = "高阶版";
@@ -538,27 +538,17 @@ var tubes;
 var tubeWidth = 80;//80 60
 var minTubeHeight = 50;
 var totalTubes = 2;
-// mod 0-5 3
+
+// qjychange the tubes generating policy
 function updateTubes() {
     for (var i = 0; i < tubes.length; i++) {
         //updateTube(tubes[i]);
         if (tubes[i]) {
             tubes[i].topRect.x -= scrollSpeed;
             tubes[i].bottomRect.x = tubes[i].topRect.x;// bottom part
-            var alter;
-            if (i < totalTubes) {
-                alter = totalTubes + i;
-            } else {
-                alter = i - totalTubes;
-            }
-            // if (!tubes[alter] && tubes[i].topRect.x <= 0) {//not exist , create a new alter instead
-            if ((!tubes[alter] || tubes[alter].topRect.x <= -tubeWidth) && tubes[i].topRect.x <= 0) {//not exist , create a new alter instead
-                tubes[alter] = {};
-                tubes[alter].canvas = document.createElement("canvas");
-                tubes[alter].topRect = new MyRectangle(canvas.width); // give x
-                tubes[alter].bottomRect = new MyRectangle(canvas.width);
-                //                console.log("tubes[alter]----->" + tubes[alter]);
-                renderTube(tubes[alter]);
+            if (tubes[i].topRect.x < -tubesIntervalWidth) {
+                tubes[i].topRect.x = canvas.width;
+                tubes[i].bottomRect.x = tubes[i].topRect.x;// bottom part
             }
         }
     }
@@ -572,13 +562,15 @@ function renderTubes() {
     }
 }
 
+// qjychange the tubes genetating policy
 function createTubes() {
-    tubes = new Array(2 * totalTubes);
-    tubesIntervalWidth = Math.floor(canvas.width / totalTubes);//the distance between the tubes
+    tubes = [];
+    //tubesIntervalWidth = Math.floor(canvas.width / totalTubes);//the distance between the tubes
+    tubesIntervalWidth = canvas.width / totalTubes;//the distance between the tubes
 
     //    console.log("canvas.width" + canvas.width);
     //    console.log("tubesIntervalWidth" + tubesIntervalWidth);
-    for (var i = 0; i < 2 * totalTubes; i++) {
+    for (var i = 0; i < totalTubes + 1; i++) {
         tubes[i] = {};
         tubes[i].canvas = document.createElement("canvas");
         tubes[i].topRect = new MyRectangle(canvas.width + (i * tubesIntervalWidth)); // give x
