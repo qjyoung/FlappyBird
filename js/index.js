@@ -549,6 +549,7 @@ function updateTubes() {
             if (tubes[i].topRect.x < -tubesIntervalWidth) {
                 tubes[i].topRect.x = canvas.width;
                 tubes[i].bottomRect.x = tubes[i].topRect.x;// bottom part
+                renderTube(tubes[i]); //should render a new tube !
             }
         }
     }
@@ -583,7 +584,7 @@ function createTubes() {
 var tubeOutlineColor = "#534130";
 var tubeMainColor = "#75be2f";
 var tubeCapHeight = 40;
-
+// qjyrandomtube
 function renderTube(tube) {
     tube.canvas.width = tubeWidth;
     tube.canvas.height = groundGraphicRect.y;
